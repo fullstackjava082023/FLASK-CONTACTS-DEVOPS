@@ -11,6 +11,12 @@ form {
     border-radius: 8px;
 }
 
+#error {
+    color: red;
+    margin: 20px;
+    font-family: Cursive;
+}
+
 
 label {
     display: block;

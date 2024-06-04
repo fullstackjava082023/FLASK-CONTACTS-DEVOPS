@@ -46,6 +46,8 @@ def findByNumber(number):
         if contact['number'] == number:
             return contact
     return None
+
+
         
 
 @app.route('/')
@@ -73,21 +75,25 @@ def createContact():
     phone = request.form['phone']   
     gender = request.form['gender']
     photo = request.files['photo']
-    # create a name for the file to be saved
-    file_path = 'HWLesson6/static/images/' + fullname + '.jpg'
-    # save the file in the server
-    photo.save(file_path)
-    # create a new contact
-    new_contact =  {
-                'number': len(contacts_list) + 1,
-                'name': fullname,
-                'phone': phone,
-                'email': email,
-                'gender': gender,
-                'photo': fullname + '.jpg'
-            }
-    # add new contact to the list (database)
-    contacts_list.append(new_contact)
+    if not check_contact_exist(fullname, email):
+        if photo:
+            # create a name for the file to be saved
+            file_path = 'static/images/' + fullname + '.jpg'
+            # save the file in the server
+            photo.save(file_path)
+        # create a new contact
+        new_contact =  {
+                    'number': len(contacts_list) + 1,
+                    'name': fullname,
+                    'phone': phone,
+                    'email': email,
+                    'gender': gender,
+                    'photo': fullname + '.jpg'
+                }
+        # add new contact to the list (database)
+        contacts_list.append(new_contact)
+    else:
+        return render_template('addContactForm.html', message='Contact already exists')
     return redirect('/viewContacts')
 
 @app.route('/deleteContact/<int:number>')
@@ -105,6 +111,18 @@ def search_contacts(search_name):
             search_results.append(contact)
     return search_results
 
+
+def check_contact_exist(name, email):
+    for contact in contacts_list:
+        if (name):
+            if name.lower() == contact['name'].lower():
+                return True
+        if (email):
+            if email.lower() == contact['email'].lower():
+                return True
+    return False
+
+
 # search route to filter the contact list according to the search criteria:
 @app.route('/search', methods=['POST'])
 def search():
@@ -115,4 +133,4 @@ def search():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True ,port=5051)
