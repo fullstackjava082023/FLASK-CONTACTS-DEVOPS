@@ -1,52 +1,19 @@
 from flask import Flask, render_template, request, redirect
 import mysql.connector
+from dotenv import load_dotenv
+import os
+load_dotenv()
 
 app = Flask(__name__)
 
 # Connect to MySQL database
 db = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="admin",
-    database="contacts_app"
+    host=os.getenv("DB_HOST"),
+    user=os.getenv("DB_USER"),
+    password=os.getenv("DB_PASSWORD"),
+    database=os.getenv("DB_NAME")
 )
 
-
-# list, set , dictionary, tuple similar to database
-# contacts_list = [
-#                     {
-#                         'number': 1,
-#                         'name': 'Arja Stark',
-#                         'phone': '044545',
-#                         'email': 'Valan.Margulis@Winterfel.com',
-#                         'photo': 'arya-stark.jpg',
-#                         'gender': 'Female'
-#                     },
-#                     {
-#                         'number': 2,
-#                         'name': 'Jon Snow',
-#                         'phone': '045456465',
-#                         'email': 'Night.Watch@Wall.com',
-#                         'photo': 'jon-snow.jpg',
-#                         'gender': 'Male'
-#                     },
-#                     {
-#                         'number': 3,
-#                         'name': 'Ned Stark',
-#                         'phone': '04545',
-#                         'email': 'Ned@WF.com',
-#                         'photo': 'ned-stark.jpg',
-#                         'gender': 'Male'
-#                     },
-#                     {
-#                         'number': 4,
-#                         'name': 'Hodor',
-#                         'phone': 'hodor',
-#                         'email': 'hodor@hodor.com',
-#                         'photo': 'hodor.jpg',
-#                         'gender': 'Male'
-#                     }
-#                 ]
 
 # function to find all contacts by query in the mysql database
 cursor = db.cursor(dictionary=True)
