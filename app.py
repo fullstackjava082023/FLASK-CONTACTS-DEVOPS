@@ -1,65 +1,24 @@
 from flask import Flask, render_template, request, redirect
-import mysql.connector
-from dotenv import load_dotenv
-import os
-load_dotenv()
+db_to_use = "MONGO"  # "MONGO,MYSQL"
+if db_to_use == "MYSQL":
+    from data_sql import (get_contacts, findByNumber,
+                          check_contact_exist, search_contacts,
+                          create_contact,
+                          delete_contact, update_contact_in_db)
+elif db_to_use == "MONGO":
+    from data_mongo import (get_contacts, findByNumber,
+                            check_contact_exist, search_contacts,
+                            create_contact,
+                            delete_contact, update_contact_in_db)
 
 app = Flask(__name__)
 
-# Connect to MySQL database
-db = mysql.connector.connect(
-    host=os.getenv("DB_HOST"),
-    user=os.getenv("DB_USER"),
-    password=os.getenv("DB_PASSWORD"),
-    database=os.getenv("DB_NAME")
-)
 
-
-# function to find all contacts by query in the mysql database
-cursor = db.cursor(dictionary=True)
-def get_contacts():
-    cursor.execute("SELECT * FROM contacts")
-    result = cursor.fetchall()
-    return result
-
-
-# contacts_list = get_contacts()
-
-
-# function to find contact by number
-def findByNumber(number):
-    cursor.execute("SELECT * FROM contacts WHERE number = %s", (number,))
-    result = cursor.fetchone()
-    return result
-
-
-def check_contact_exist(name, email):
-    cursor.execute("SELECT * FROM contacts WHERE name = %s OR email = %s", (name, email))
-    result = cursor.fetchone()
-    return bool(result)
-
-
-def search_contacts(search_name):
-    cursor.execute("SELECT * FROM contacts WHERE name LIKE %s", ('%' + search_name + '%',))
-    result = cursor.fetchall()
-    return result
-
-
-def create_contact(name, phone, email, gender, photo):
-    cursor.execute("INSERT INTO contacts (name, phone, email, gender, photo) VALUES (%s, %s, %s, %s, %s)", (name, phone, email, gender, photo))
-    db.commit()
-    return "Contact added successfully"
-
-
-def delete_contact(number):
-    cursor.execute("DELETE FROM contacts WHERE number = %s", (number,))
-    db.commit()
-    return "Contact deleted successfully"
 
 
 @app.route('/')
 def hello():
-    return 'Hello, World!'
+    return redirect('/viewContacts')
 
 
 @app.route('/addContact', methods=['GET', 'POST'])
@@ -70,6 +29,7 @@ def addContact():
 # route to view the contact list
 @app.route('/viewContacts')
 def viewContacts():
+    print(get_contacts())
     return render_template('index.html', contacts=get_contacts())
 
 
@@ -94,10 +54,26 @@ def createContact():
         return render_template('addContactForm.html', message='Contact already exists')
     return redirect('/viewContacts')
 
-@app.route('/deleteContact/<int:number>')
+@app.route('/deleteContact/<number>')
 def deleteContact(number):
     delete_contact(number)
     return redirect('/viewContacts')
+
+
+@app.route('/editContact/<number>')
+def editContact(number):
+    contact = findByNumber(number)
+    return render_template('editContactForm.html', contact=contact)
+
+@app.route('/saveUpdatedContact/<number>', methods=['POST'])
+def saveUpdatedContact(number):
+    name = request.form['fullname']
+    phone = request.form['phone']
+    email = request.form['email']
+    gender = request.form['gender']
+    update_contact_in_db(number, name, phone, email, gender)
+    return redirect('/viewContacts')
+
 
 # search route to filter the contact list according to the search criteria:
 @app.route('/search', methods=['POST'])

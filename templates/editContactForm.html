@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Contact</title>
+    <link rel="stylesheet" href="/static/styles/styles1.css">
+</head>
+<body>
+    <!-- Create a form titled "Edit Contact" with the following fields: -->
+    <!-- Name (required) -->
+    <!-- Email -->
+    <!-- Phone (required) -->
+    <!--gender -->
+    <!-- "I Agree" Checkbox (required) -->
+    <!-- "Update Contact" Button -->
+    <h2 id="error">{{message}}</h2>
+    <form action="/saveUpdatedContact/{{contact.number if contact.number else contact._id}}" method="POST" enctype="multipart/form-data">
+        <h1>Edit Contact Form</h1>
+        <!-- name -->
+        <div>
+            <label id="addNameLabel" for="addName">Enter your name:</label>
+            <input type="text" name="fullname" id="addName" value="{{contact.name}}" required>
+        </div>
+        <!-- email -->
+        <div>
+            <label for="email">Enter your email:</label>
+            <input type="email" name="email" id="email" value="{{contact.email}}" required>
+        </div>
+        <!-- phone -->
+        <div>
+            <label for="phone">Enter your Phone:</label>
+            <input type="tel" pattern="[0-9]*"  name="phone" id="phone" value="{{contact.phone}}" required>
+        </div>
+        <!-- gender -->
+         <div>
+            <label for="gender">Select Your Gender</label>
+            <select name="gender" id="gender">
+                <option value="Male" {% if contact.gender == 'Male' %}selected{% endif %}>Male</option>
+                <option value="Female" {% if contact.gender == 'Female' %}selected{% endif %}>Female</option>
+                <option value="Other" {% if contact.gender == 'Other' %}selected{% endif %}>Other</option>
+            </select>
+        </div>
+         <!-- submit -->
+        <input type="submit" value="Save Changes">
+    </form>
+</body>
+</html>

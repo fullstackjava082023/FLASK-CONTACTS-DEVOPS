@@ -47,18 +47,21 @@ As example of contacts you can insert Arja Stark ,
         <tbody>
             {% for contact in contacts:  %}
                 <tr>
-                    <td>{{contact.number}}</td>
+                    <!--if contact.number is null show contact._id  -->
+                    <td>{{contact.number if contact.number else contact._id}}</td>
                     <td>{{contact.name}}</td>
                     <td>{{contact.phone}}</td>
                     <td>{{contact.email}}</td>
                     <td>{{contact.gender}}</td>
                     <td><img src="/static/images/{{contact.photo}}"  height="50px"></td>
                     <td>
-                        <a href="/deleteContact/{{contact.number}}">
+                        <a href="/deleteContact/{{contact.number if contact.number else contact._id}}">
                            <button>Delete</button>
                         </a>
                         <br/>
-                        <button>Edit</button>
+                        <a href="/editContact/{{contact.number if contact.number else contact._id}}">
+                           <button>Edit</button>
+                        </a>
                     </td>
                 </tr>        
             {% endfor %}

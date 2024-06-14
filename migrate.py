@@ -46,7 +46,7 @@ def create_contacts_table():
     cursor.execute("CREATE TABLE IF NOT EXISTS contacts ("
                    "number INT AUTO_INCREMENT PRIMARY KEY,"
                    "name VARCHAR(255) NOT NULL,"
-                   "phone VARCHAR(50),"
+                   "phone VARCHAR(255),"
                    "email VARCHAR(255) NOT NULL,"
                    "gender VARCHAR(10),"
                    "photo  VARCHAR(255))")
@@ -60,7 +60,7 @@ def create_fake_data():
         name = fake.name()
         phone = fake.phone_number()
         email = fake.email()
-        gender = fake.random_element(elements=('Male','Female'))
+        gender = fake.random_element(elements=('Male','Female', 'Other'))
         photo = f"{name}.jpg"
         image = generate_image(name,f'static/images/{photo}')
         cursor.execute("INSERT INTO contacts (name, phone, email, gender, photo) "
