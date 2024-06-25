@@ -1,5 +1,12 @@
 from flask import Flask, render_template, request, redirect
-db_to_use = "MONGO"  # "MONGO,MYSQL"
+from dotenv import load_dotenv
+import os
+load_dotenv()
+
+
+# Retrieve the DATABASE_TYPE environment variable, defaulting to 'MYSQL' if not set
+db_to_use = os.getenv("DATABASE_TYPE", "MYSQL")
+
 if db_to_use == "MYSQL":
     from data_sql import (get_contacts, findByNumber,
                           check_contact_exist, search_contacts,
@@ -85,4 +92,4 @@ def search():
 
 
 if __name__ == '__main__':
-    app.run(debug=True ,port=5051)
+    app.run(debug=True ,port=5052)
