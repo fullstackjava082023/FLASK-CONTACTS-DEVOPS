@@ -8,38 +8,44 @@ import os
 load_dotenv()
 
 # Get the OpenAI API key from environment variables
-client = OpenAI(
-  api_key=os.getenv('OPENAI_API_KEY'),  # this is also the default, it can be omitted
-)
+api_key=os.getenv('OPENAI_API_KEY')
+client = OpenAI(api_key=api_key) if api_key else None
 
 def generate_image(prompt, filename):
-    response = client.images.generate(
-        prompt=prompt,
-        size="256x256",
-    )
-    image_url = response.data[0].url
-    # get the file from the url
-    stream = requests.get(image_url)
-    with open(filename, "wb") as f:
-        f.write(stream.content)
-    print(f"Image saved as {filename}")
+    if client:
+        try:
+            response = client.images.generate(
+                prompt=prompt,
+                size="256x256",
+            )
+            image_url = response.data[0].url
+            # get the file from the url
+            stream = requests.get(image_url)
+            with open(filename, "wb") as f:
+                f.write(stream.content)
+            print(f"Image saved as {filename}")
+            return filename
+        except requests.RequestException as e:
+            print(f"Failed to generate image: {e}")
+    return None
 
 
 # create a connection to the database
 db = mysql.connector.connect(
-    host=os.getenv("DB_HOST"),
-    user=os.getenv("DB_USER"),
-    passwd=os.getenv("DB_PASSWORD"),
+    host=os.getenv("DB_HOST", "localhost"),
+    user=os.getenv("DB_USER", "root"),
+    passwd=os.getenv("DB_PASSWORD", "admin"),
 )
 
 cursor = db.cursor(dictionary=True)
 
 
 def create_db():
-    cursor.execute(f"CREATE DATABASE IF NOT EXISTS {os.getenv('DB_NAME')}")
-    cursor.execute(f"USE {os.getenv('DB_NAME')}")
+    db_name = os.getenv('DB_NAME', 'contacts_app')
+    cursor.execute(f"CREATE DATABASE IF NOT EXISTS {db_name}")
+    cursor.execute(f"USE {db_name}")
     db.commit()
-    print(f"Database {os.getenv('DB_NAME')} created successfully")
+    print(f"Database {db_name} created successfully")
 
 
 def create_contacts_table():
