@@ -4,8 +4,8 @@ import os
 from bson import ObjectId
 load_dotenv()
 
-my_client = pymongo.MongoClient(os.getenv("MONGO_URI"))
-mydb = my_client[os.getenv("DB_NAME")]
+my_client = pymongo.MongoClient(os.getenv("MONGO_URI", "mongodb://localhost:27017/"))
+mydb = my_client[os.getenv("DB_NAME", "contacts_app")]
 my_collection = mydb["contacts"]
 
 # implementation of the functions
