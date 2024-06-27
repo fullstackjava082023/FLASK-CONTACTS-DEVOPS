@@ -82,6 +82,14 @@ python migrate.py
 python app.py
 ```
 
+## Access the application :
+application should be available at port 5052
+Route examples:
+- http://localhost:5052/
+- http://127.0.0.1:5052/viewContacts
+- http://127.0.0.1:5052/editContact/{id}
+- http://127.0.0.1:5052/addContact/
+
 ## Screenshots
 
 ![delete](https://github.com/tanrax/flask-contacts/raw/master/screenshots/delete.jpg)
