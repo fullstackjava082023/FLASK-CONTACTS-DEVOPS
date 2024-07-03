@@ -29,18 +29,17 @@ sudo apt update
 sudo apt install python3
 sudo apt install python3-pip
 sudo apt install python3-venv
-alias python=python3
-alias pip=pip3
+
 ```
 #### .venv creation (Optional)
 ```bash
-python -m venv .venv
+python3 -m venv .venv
 source .venv/bin/activate
 ```
 
 #### Install dependencies
 ```bash
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 ```
 
 
@@ -74,12 +73,12 @@ export DEBUG=false
 
 #### For MYSQL RUN Migration
 ```bash
-python migrate.py
+python3 migrate.py
 ```
 
 
 ```bash
-python app.py
+python3 app.py
 ```
 
 ## Access the application :
