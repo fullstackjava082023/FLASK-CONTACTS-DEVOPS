@@ -27,6 +27,13 @@ EOF
 # Optional: Allow MySQL to listen on all interfaces (not recommended for production)
 sudo sed -i 's/127.0.0.1/0.0.0.0/' /etc/mysql/mysql.conf.d/mysqld.cnf
 
+# Create root user for remote connection and grant privileges
+sudo mysql -u root -p$MYSQL_ROOT_PASSWORD <<EOF
+CREATE USER IF NOT EXISTS 'root'@'192.168.33.10' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD';
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'192.168.33.10' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+EOF
+
 # Restart MySQL Service
 sudo systemctl restart mysql
 

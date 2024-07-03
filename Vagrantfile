@@ -1,65 +1,71 @@
 Vagrant.configure("2") do |config|
+  # Set the boot timeout to 10 minutes (600 seconds)
+  config.vm.boot_timeout = 600
   # First VM configuration
-  # config.vm.define "desktop-for-tests" do |desktop|
-  #   desktop.vm.box = "ubuntu/bionic64" # Use "ubuntu/jammy64" for Ubuntu 22.04 LTS
-  #   desktop.vm.hostname = "desktop-for-tests"  # Set your desired hostname here
+  config.vm.define "mysql_machine" do |mysql_machine|
+    mysql_machine.vm.box = "ubuntu/jammy64" # Use "ubuntu/jammy64" for Ubuntu 22.04 LTS
+    mysql_machine.vm.hostname = "mysqlMachine"  # Set your desired hostname here
 
-  #   # Provisioning script to set up the VM
-  #   desktop.vm.provision "shell", path: "provisions/gui-and-guest-scripts.sh"
+    #  # Port forwarding
+    # second.vm.network "forwarded_port", guest: 5052, host: 5052
 
-  #   # Provisioning script for MySQL setup
-  #   desktop.vm.provision "shell", path: "provisions/mysql-script.sh"
+    # Synced folder (optional)
+    mysql_machine.vm.synced_folder ".", "/vagrant", type: "virtualbox"
 
-  #   # Enable the GUI
-  #   desktop.vm.provider "virtualbox" do |vb|
-  #     vb.gui = true
-  #     vb.memory = "4096"
-  #   end
+    # Provisioning script for MySQL setup
+    mysql_machine.vm.provision "shell", path: "provisions/mysql-script.sh"
 
-  #   # Synced folder (optional)
-  #   desktop.vm.synced_folder ".", "/vagrant", type: "virtualbox"
+    # creation of the ip within the private network
+    # note the range of private ips is :
+    # The range of private IP addresses typically used in a private network is defined by the Internet Assigned Numbers Authority (IANA) as follows:
+    # - Class A: 10.0.0.0 to 10.255.255.255
+    # - Class B: 172.16.0.0 to 172.31.255.255
+    # - Class C: 192.168.0.0 to 192.168.255.255
+    mysql_machine.vm.network "private_network", ip: "192.168.33.20"
+    
 
-  #   # Enable drag and drop
-  #   desktop.vm.provider "virtualbox" do |vb|
-  #     vb.customize ["modifyvm", :id, "--draganddrop", "bidirectional"]
-  #     vb.customize ["modifyvm", :id, "--clipboard", "bidirectional"]
-  #   end
-  # end
+    mysql_machine.vm.provider "virtualbox" do |vb|
+      # vb.gui = true
+      vb.memory = "1024"
+    end
 
-  # Second VM configuration
-  config.vm.define "second-vm" do |second|
-    second.vm.box = "ubuntu/jammy64" # Use "ubuntu/jammy64" for Ubuntu 22.04 LTS
-    second.vm.hostname = "second-vm"  # Set your desired hostname here
+    
+  end
+
+  #  Flask VM configuration
+  config.vm.define "flask-vm" do |flask|
+    flask.vm.box = "ubuntu/jammy64" # Use "ubuntu/jammy64" for Ubuntu 22.04 LTS
+    flask.vm.hostname =   "flask-vm"  # Set your desired hostname here
 
 
     # Synced folder (optional)
-    second.vm.synced_folder ".", "/vagrant", type: "virtualbox"
+    flask.vm.synced_folder ".", "/vagrant", type: "virtualbox"
 
     # Provisioning scripts for setting up the VM, MySQL, Python pip and venv, and venv initialization
-    # second.vm.provision "shell", name: "ubuntu-guest", path: "provisions/gui-and-guest-scripts.sh"
-    second.vm.provision "shell", name: "mysql-script", path: "provisions/mysql-script.sh"
-    second.vm.provision "shell", name: "python-pip-venv", path: "provisions/python-pip-venv.sh"
-    # second.vm.provision "shell", name: "venv-init", path: "provisions/create-venv.sh"
+    #  flask.vm.provision "shell", name: "ubuntu-guest", path: "provisions/gui-and-guest-scripts.sh"
+    #  flask.vm.provision "shell", name: "mysql-script", path: "provisions/mysql-script.sh"
+    flask.vm.provision "shell", name: "python-pip-venv", path: "provisions/python-pip-venv.sh"
+    #  flask.vm.provision "shell", name: "venv-init", path: "provisions/create-venv.sh"
 
 
     # Inline shell provisioner for running application setup commands
-    second.vm.provision "shell", name: "run", path: "provisions/run-app.sh", run: "always"
+    flask.vm.provision "shell", name: "run", path: "provisions/run-app.sh", run: "always"
 
-   
+    flask.vm.network "private_network", ip: "192.168.33.10"
 
     # Enable the GUI
-    second.vm.provider "virtualbox" do |vb|
+    flask.vm.provider "virtualbox" do |vb|
       # vb.gui = true
       vb.memory = "4096"
       vb.cpus = 2
     end
 
     # Port forwarding
-    second.vm.network "forwarded_port", guest: 5052, host: 5052
+    flask.vm.network "forwarded_port",host: 5053, guest: 5052
 
 
     # Enable drag and drop
-    second.vm.provider "virtualbox" do |vb|
+    flask.vm.provider "virtualbox" do |vb|
       vb.customize ["modifyvm", :id, "--draganddrop", "bidirectional"]
       vb.customize ["modifyvm", :id, "--clipboard", "bidirectional"]
     end
