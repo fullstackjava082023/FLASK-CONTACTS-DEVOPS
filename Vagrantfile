@@ -1,30 +1,30 @@
 Vagrant.configure("2") do |config|
-  # # First VM configuration
-  # config.vm.define "desktop-for-tests" do |desktop|
-  #   desktop.vm.box = "ubuntu/bionic64" # Use "ubuntu/jammy64" for Ubuntu 22.04 LTS
-  #   desktop.vm.hostname = "desktop-for-tests"  # Set your desired hostname here
+  # First VM configuration
+  config.vm.define "desktop-for-tests" do |desktop|
+    desktop.vm.box = "ubuntu/bionic64" # Use "ubuntu/jammy64" for Ubuntu 22.04 LTS
+    desktop.vm.hostname = "desktop-for-tests"  # Set your desired hostname here
 
-  #   # Provisioning script to set up the VM
-  #   desktop.vm.provision "shell", path: "gui-and-guest-scripts.sh"
+    # Provisioning script to set up the VM
+    desktop.vm.provision "shell", path: "provisions/gui-and-guest-scripts.sh"
 
-  #   # Provisioning script for MySQL setup
-  #   desktop.vm.provision "shell", path: "mysql-script.sh"
+    # Provisioning script for MySQL setup
+    desktop.vm.provision "shell", path: "provisions/mysql-script.sh"
 
-  #   # Enable the GUI
-  #   desktop.vm.provider "virtualbox" do |vb|
-  #     vb.gui = true
-  #     vb.memory = "4096"
-  #   end
+    # Enable the GUI
+    desktop.vm.provider "virtualbox" do |vb|
+      vb.gui = true
+      vb.memory = "4096"
+    end
 
-  #   # Synced folder (optional)
-  #   desktop.vm.synced_folder ".", "/vagrant", type: "virtualbox"
+    # Synced folder (optional)
+    desktop.vm.synced_folder ".", "/vagrant", type: "virtualbox"
 
-  #   # Enable drag and drop
-  #   desktop.vm.provider "virtualbox" do |vb|
-  #     vb.customize ["modifyvm", :id, "--draganddrop", "bidirectional"]
-  #     vb.customize ["modifyvm", :id, "--clipboard", "bidirectional"]
-  #   end
-  # end
+    # Enable drag and drop
+    desktop.vm.provider "virtualbox" do |vb|
+      vb.customize ["modifyvm", :id, "--draganddrop", "bidirectional"]
+      vb.customize ["modifyvm", :id, "--clipboard", "bidirectional"]
+    end
+  end
 
   # Second VM configuration
   config.vm.define "second-vm" do |second|
