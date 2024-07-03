@@ -32,7 +32,7 @@ Vagrant.configure("2") do |config|
     second.vm.hostname = "second-vm"  # Set your desired hostname here
 
     # Provisioning scripts for setting up the VM, MySQL, Python pip and venv, and venv initialization
-    second.vm.provision "shell", name: "ubuntu-guest", path: "provisions/gui-and-guest-scripts.sh"
+    # second.vm.provision "shell", name: "ubuntu-guest", path: "provisions/gui-and-guest-scripts.sh"
     second.vm.provision "shell", name: "mysql-script", path: "provisions/mysql-script.sh"
     second.vm.provision "shell", name: "python-pip-venv", path: "provisions/python-pip-venv.sh"
     second.vm.provision "shell", name: "venv-init", path: "provisions/create-venv.sh"
