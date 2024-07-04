@@ -29,8 +29,7 @@ sudo apt update
 sudo apt install python3
 sudo apt install python3-pip
 sudo apt install python3-venv
-alias python=python3
-alias pip=pip3
+
 ```
 #### .venv creation (Optional)
 ```bash
