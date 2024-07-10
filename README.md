@@ -50,15 +50,17 @@ This project requires the following environment variables to be set:
 Create a .env file in the root of your project and add the following lines:
 #### Required Variables:
 
- - DB_HOST: The hostname of your MySQL database. default localhost
- - DB_USER: The username for your MySQL database. default root
- - DB_PASSWORD: The password for your MySQL database. default admin
- - DB_NAME: The name of your MySQL database. default contacts_app
- - DATABASE_TYPE: MYSQL or MONGO. default MYSQL
+ - DB_HOST= The hostname of your MySQL database. default localhost
+ - DB_USER= The username for your MySQL database. default root
+ - DB_PASSWORD= The password for your MySQL database. default admin
+ - DB_NAME= The name of your MySQL database. default contacts_app
+ - DATABASE_TYPE= MYSQL or MONGO. default MYSQL
+ - DB_PORT= The port of your MySQL database. default 3306
+
 
 #### Optional Variables
- - OPENAI_API_KEY: Your OpenAI API key. Obtain this from the OpenAI API settings page.
- - MONGO_URI: in case you are using mongodb default - mongodb://localhost:27017/
+ - OPENAI_API_KEY= Your OpenAI API key. Obtain this from the OpenAI API settings page.
+ - MONGO_URI= in case you are using mongodb default - mongodb://localhost:27017/
 
 #### Set environment variables by script (Linux optional)
 ```bash
