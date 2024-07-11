@@ -1,5 +1,6 @@
-# Change working directory to /vagrant
-cd /vagrant
+python3 -m venv ~/.venv
+source ~/.venv/bin/activate
+
 # Install Python dependencies from requirements.txt
 pip3 install -r requirements.txt
 

@@ -20,7 +20,7 @@ EOF
 
 # Change authentication method and set root password
 sudo mysql -u root <<EOF
-ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '$MYSQL_ROOT_PASSWORD';
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'admin';
 FLUSH PRIVILEGES;
 EOF
 
@@ -29,8 +29,8 @@ sudo sed -i 's/127.0.0.1/0.0.0.0/' /etc/mysql/mysql.conf.d/mysqld.cnf
 
 # Create root user for remote connection and grant privileges
 sudo mysql -u root -p$MYSQL_ROOT_PASSWORD <<EOF
-CREATE USER IF NOT EXISTS 'root'@'192.168.33.10' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD';
-GRANT ALL PRIVILEGES ON *.* TO 'root'@'192.168.33.10' WITH GRANT OPTION;
+CREATE USER IF NOT EXISTS 'root'@'%' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD';
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 EOF
 

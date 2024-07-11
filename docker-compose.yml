@@ -1,0 +1,27 @@
+services:
+  my-app:
+    image: shashkist/flask-contacts-app
+    ports:
+      - 5053:5052
+    environment:
+      - DATABASE_TYPE=MONGO
+      - MONGO_URI=mongodb://mongo:27017
+  
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    # environment:
+    #   - MYSQL_ROOT_PASSWORD=admin
+
+    volumes:
+      - mongo-data:/data/db
+  mongo-express:
+    image: mongo-express
+    ports:
+      - "8081:8081"
+    # environment:
+    #   - PMA_HOST=mysql
+volumes:
+  mongo-data:
+
