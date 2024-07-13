@@ -28,7 +28,7 @@ echo "docker installation complete"
 sudo groupadd docker
 # Add your user to the docker group.
 sudo usermod -aG docker $USER
-
+sudo usermod -aG docker jenkins
 # Apply the new group membership without re-login
 newgrp docker
 
@@ -86,3 +86,7 @@ sudo install minikube-linux-amd64 /usr/local/bin/minikube && rm minikube-linux-a
 
 # start minikube
 minikube start --driver=docker
+
+# give read permissions to jenkins to .kube and .minikube folders
+sudo chown -R jenkins:jenkins /home/vagrant/.kube
+sudo chown -R jenkins:jenkins /home/vagrant/.minikube

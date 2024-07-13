@@ -14,6 +14,11 @@ echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc]" \
 sudo apt-get update
 sudo apt-get install jenkins -y
 
+# This line allows the jenkins user to run any command (ALL) as any user ((ALL)) without being prompted for a password (NOPASSWD).
+# need to add this to sudo file (sudo visudo)  # jenkins ALL=(ALL) NOPASSWD: ALL
+# add jenkins to sudo group
+sudo usermod -aG sudo jenkins  
+sudo usermod -aG vagrant jenkins  
 # start jenkins
 sudo systemctl start jenkins
 

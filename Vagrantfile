@@ -22,21 +22,25 @@ Vagrant.configure("2") do |config|
     desktop.vm.provision "shell", path: "provisions/install-jenkins.sh"
     # installing software needed for jinkins (git docker kubectl)
     desktop.vm.provision "shell", path: "provisions/install-jenkins-sotware.sh"
-    
+    # starting mini kube on each boot
+    desktop.vm.provision "shell", inline: <<-SHELL
+      # Other provisioning steps...
+      minikube start --driver=docker --user=vagrant
+    SHELL
 
     # Enable the GUI
     # Enable drag and drop
     desktop.vm.provider "virtualbox" do |vb|
       vb.gui = true
       vb.memory = "4096"
-      vb.name = "JenkinsCleanUbuntuWithGUIVagrantBox" 
+      vb.name = "JenkinsUbuntuVagrantBox" 
       vb.customize ["modifyvm", :id, "--draganddrop", "bidirectional"]
       vb.customize ["modifyvm", :id, "--clipboard", "bidirectional"]
     end
 
-    # Synced folder (optional)
+    # Synced folder
     desktop.vm.synced_folder ".", "/vagrant", type: "virtualbox"
-    desktop.vm.synced_folder "C:\\Users\\Iliap\\.kube\\jenkins-vm-config", "/jenkins-vm-config", type: "virtualbox"
+    desktop.vm.synced_folder "./kubeconfig", "/home/vagrant/.kube", type: "virtualbox"
 
     
    
