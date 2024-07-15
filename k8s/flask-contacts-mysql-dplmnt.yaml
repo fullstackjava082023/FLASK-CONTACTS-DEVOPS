@@ -14,11 +14,18 @@ spec:
       labels:
         app: flask-contacts-app
     spec:
+      volumes:
+      - name: static-files
+        persistentVolumeClaim:
+          claimName: static-files-pvc
       containers:
       - name: flask-contacts-app
         image: shashkist/flask-contacts-app:1.3
         ports:
         - containerPort: 5052
+        volumeMounts:
+        - mountPath: /app/static/images
+          name: static-files
         env:
         - name: DB_HOST
           valueFrom:
