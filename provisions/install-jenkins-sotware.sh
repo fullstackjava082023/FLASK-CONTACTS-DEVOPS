@@ -69,24 +69,15 @@ sudo apt-get install -y kubectl
 ###
 # install minikube!!!
 echo "installing minikube"
-# # Update the package list:
-# sudo apt-get update
-
-# #Install conntrack:
-# sudo apt-get install -y conntrack
-# # Install crictl:
-# VERSION="v1.30.1" # specify the version of crictl
-# sudo curl -LO https://github.com/kubernetes-sigs/cri-tools/releases/download/$VERSION/crictl-$VERSION-linux-amd64.tar.gz
-# sudo tar -C /usr/local/bin -xzvf crictl-$VERSION-linux-amd64.tar.gz
-# sudo rm crictl-$VERSION-linux-amd64.tar.gz
-
-
+# Update the package list:
+sudo apt-get update
 curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
 sudo install minikube-linux-amd64 /usr/local/bin/minikube && rm minikube-linux-amd64
 
-# start minikube
-minikube start --driver=docker
+# # start minikube
+# minikube start --driver=docker --user=vagrant 
 
-# give read permissions to jenkins to .kube and .minikube folders
-sudo chown -R jenkins:jenkins /home/vagrant/.kube
-sudo chown -R jenkins:jenkins /home/vagrant/.minikube
+
+# # give read permissions to jenkins to .kube and .minikube folders
+# sudo chown -R jenkins:jenkins /home/vagrant/.kube
+# sudo chown -R jenkins:jenkins /home/vagrant/.minikube

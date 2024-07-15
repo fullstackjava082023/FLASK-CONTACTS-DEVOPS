@@ -1,0 +1,13 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: arja-view-pods
+  namespace: default
+subjects:
+- kind: User
+  name: arja # Name of the user to bind the role to
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: view-pods # The name of the Role to bind to
+  apiGroup: rbac.authorization.k8s.io

@@ -1,0 +1,41 @@
+# jenkins namespace
+# can be created with command: 
+# kubectl create namespace jenkins
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: jenkins
+
+---
+# jenkins service account
+# can be created with command:
+# kubectl create sa jenkins -n jenkins
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: jenkins
+  namespace: jenkins
+
+---
+# role binding to bind jenkins service account to admin role (give full access to jenkins service account)
+# In Kubernetes, the admin ClusterRole is a built-in role provided by default. 
+# It grants full access to perform any action on all resources in the cluster.
+# can be created with command: (clusterrolebinding)
+# kubectl create clusterrolebinding jenkins-admin-binding --clusterrole=admin --serviceaccount=jenkins:jenkins
+# or with command: (rolebinding)
+# kubectl create rolebinding jenkins-admin-binding --clusterrole=admin --serviceaccount=jenkins:jenkins --namespace=jenkins
+apiVersion: rbac.authorization.k8s.io/v1
+# kind: RoleBinding
+# if we want to give admin for all namespaces, we can use ClusterRoleBinding
+kind: ClusterRoleBinding
+metadata:
+  name: jenkins-admin-binding
+  namespace: jenkins
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: admin
+subjects:
+- kind: ServiceAccount
+  name: jenkins
+  namespace: jenkins
