@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="/static/styles/styles1.css">
+    <link rel="stylesheet" href="/static/styles/styles2.css">
+</head>
+
+<body>
+    <div class="navbar">
+        <a href="/">Contacts</a>
+        <div class="navbar-left">
+            <!-- search form to filter the results by criteria -->
+            
+            <form action="/search" method="POST" id="searchForm">
+                <label for="search_name">Search by name:</label>
+                <input type="text" name="search_name" id="search_name" placeholder="Name...">
+                <button type="submit">Search</button>
+            </form>
+        </div>
+        <div class="navbar-right">
+            <a href="/addContact">New</a>
+            <a href="/viewContacts">View contacts</a>
+        </div>
+    </div>
+    {% block content %}
+    {% endblock %}

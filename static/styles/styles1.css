@@ -4,7 +4,7 @@ body {
 }
 
 
-form {
+.my-form {
     background-color: #FFF;
     padding: 20px;
     width: 300px;
@@ -17,15 +17,14 @@ form {
     font-family: Cursive;
 }
 
-
-label {
+.my-form label {
     display: block;
     margin-bottom: 4px;
 }
 
+.my-form input[type="text"],
 input[type="tel"],
 input[type="email"],
-input[type="text"],
 select {
     margin-bottom: 16px;
     border: 1px solid #ccc;
@@ -46,12 +45,4 @@ input[type="submit"] {
     padding: 6px;
 }
 
-input[type="submit"]:hover {
-    opacity: 0.7;
-}
-
-
-input[type="submit"]:active {
-    opacity: 0.4;
-}
 

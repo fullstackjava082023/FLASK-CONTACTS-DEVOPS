@@ -1,38 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Contacts</title>
-    <link rel="icon" href="Google_Contacts_icon.svg" type="image/png">
-    <link rel="stylesheet" href="/static/styles/styles2.css">
+{% extends 'base.html' %}
+{% block title %}Contact List{% endblock %}    
     
-</head>
-<!-- Design a webpage representing a contacts table with
- 2-3 pre-populated contacts. Include the following
-  elements:Header for the table.Columns: Number, 
-  Name, Phone, Email, Delete/Edit buttons(for each contact).
-  "Add New Contact" button below the table, linking back to the
-   "Add Contact" form page (link)Bonus : Add images to the table 
-   of contacts for the persons.
-As example of contacts you can insert Arja Stark ,
- Jon Snow , and Tyrion Lannister -->
-<body>
-    <h1>Contacts Page</h1>
-
-    <div id = "searchForm">
-        <!-- search form to filter the results by criteria -->
-        <form action="/search" method="POST">
-            <h2>Search</h2>
-            <label for="search_name">Search by name:</label>
-            <input type="text" name="search_name" id="search_name" placeholder="Search by name">
-            <button type="submit">Search</button>
-        </form>
-    </div>
-
-    
-
-    <table>
+{% block content %}
+    <table class="contact-list">
         <thead>
            <tr>
                <th>Number</th> 
@@ -53,10 +23,10 @@ As example of contacts you can insert Arja Stark ,
                     <td>{{contact.phone}}</td>
                     <td>{{contact.email}}</td>
                     <td>{{contact.gender}}</td>
-                    <td><img src="/static/images/{{contact.photo}}"  height="50px"></td>
-                    <td>
+                    <td><img class="photo" src="/static/images/{{contact.photo}}"></td>
+                    <td class="actions">
                         <a href="/deleteContact/{{contact.number if contact.number else contact._id}}">
-                           <button>Delete</button>
+                           <button class="delete">Delete</button>
                         </a>
                         <br/>
                         <a href="/editContact/{{contact.number if contact.number else contact._id}}">
@@ -77,5 +47,4 @@ As example of contacts you can insert Arja Stark ,
         <button onclick=addDeynerysRow()>Add Daenerys Targaryen</button>
     </div>
     <script src="/static/js/index2.js"></script>
-</body>
-</html>
+{% endblock %}
