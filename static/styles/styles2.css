@@ -3,38 +3,25 @@ body {
     font-family: Arial, Helvetica, sans-serif;
 }
 
-
 h1 {
     text-align: center;
 }
 
-
 table {
     width: 90%;
     border-collapse: collapse;
+    margin: 0 auto;
 }
 
-th,td {
+th, td {
     padding: 10px;
-    text-align: left;
     border: 1px solid #ddd;
+    height: 50px;
 }
-
 
 img {
-    padding: 20px 70px;
-}
-
-#searchForm {
-    margin: 20px;
     padding: 20px;
-    width: 90%;
-    border-radius: 8px;
-    
-    /* border: 2px solid #ccc; */
-
 }
-
 
 button {
     background-color: #007bff;
@@ -44,20 +31,64 @@ button {
     border: 1px solid #ccc;
 }
 
-td button {
-    margin: auto;
-    margin-top: 20px;
-    
-    padding: 6px;
-    margin-left: 40%;
-}
-
 
 button:hover {
     opacity: 0.7;
 }
 
-
 button:active {
     opacity: 0.4;
+}
+
+.navbar {
+    background-color: #343a40;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    color: #fff;
+}
+
+.navbar-left {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-right {
+    display: flex;
+    gap: 10px;
+}
+
+.navbar a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+.navbar a:hover {
+    opacity: 0.7;
+}
+
+.contact-list {
+    width: 90%;
+    margin: 20px auto;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #ffffffc0;    
+}
+
+.photo {
+    display: block;
+    margin: auto;
+    height: 100px;
+    border-radius: 50%;
+    max-height: 50px; 
+}
+.contact-list td.actions {
+    height: 100px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.contact-list button.delete {
+    background-color: #5a040d;
 }

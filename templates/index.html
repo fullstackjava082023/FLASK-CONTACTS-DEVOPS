@@ -18,21 +18,28 @@
 As example of contacts you can insert Arja Stark ,
  Jon Snow , and Tyrion Lannister -->
 <body>
-    <h1>Contacts Page</h1>
-
-    <div id = "searchForm">
-        <!-- search form to filter the results by criteria -->
-        <form action="/search" method="POST">
-            <h2>Search</h2>
-            <label for="search_name">Search by name:</label>
-            <input type="text" name="search_name" id="search_name" placeholder="Search by name">
-            <button type="submit">Search</button>
-        </form>
+    <!-- <h1>Contacts Page</h1> -->
+    <div class="navbar">
+        <a href="/">Contacts</a>
+        <div class="navbar-left">
+            <!-- search form to filter the results by criteria -->
+            
+            <form action="/search" method="POST" id="searchForm">
+                <label for="search_name">Search by name:</label>
+                <input type="text" name="search_name" id="search_name" placeholder="Name...">
+                <button type="submit">Search</button>
+            </form>
+        </div>
+        <div class="navbar-right">
+            <a href="/addContact">New</a>
+            <a href="/viewContacts">View contacts</a>
+        </div>
     </div>
 
     
+    
 
-    <table>
+    <table class="contact-list">
         <thead>
            <tr>
                <th>Number</th> 
@@ -53,10 +60,10 @@ As example of contacts you can insert Arja Stark ,
                     <td>{{contact.phone}}</td>
                     <td>{{contact.email}}</td>
                     <td>{{contact.gender}}</td>
-                    <td><img src="/static/images/{{contact.photo}}"  height="50px"></td>
-                    <td>
+                    <td><img class="photo" src="/static/images/{{contact.photo}}"></td>
+                    <td class="actions">
                         <a href="/deleteContact/{{contact.number if contact.number else contact._id}}">
-                           <button>Delete</button>
+                           <button class="delete">Delete</button>
                         </a>
                         <br/>
                         <a href="/editContact/{{contact.number if contact.number else contact._id}}">
