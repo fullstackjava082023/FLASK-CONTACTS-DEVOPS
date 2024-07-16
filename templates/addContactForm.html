@@ -1,19 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Contact</title>
-    <link rel="stylesheet" href="/static/styles/styles1.css">
-</head>
-<body>
-    <!-- Create a form titled "Add Contact" 
-    with the following fields:Name 
-    (required)Email,Phone (required)
-    Gender"I Agree" Checkbox (required)"Add to Contacts" Button -->
+{% extends 'base.html' %}
+{% block title %}Add Contacts Page{% endblock %}
 
+{% block content %}
     <h2 id="error">{{message}}</h2>
-    <form action="/createContact" method="POST" enctype="multipart/form-data">
+    <form class="my-form" action="/createContact" method="POST" enctype="multipart/form-data">
         <h1>Add Contact Form</h1>
         <!-- name -->
         <div>
@@ -56,7 +46,4 @@
     </form>
 
     <script src="/static/js/index.js"></script>
-</body>
-</html>
-
-
+{% endblock %}

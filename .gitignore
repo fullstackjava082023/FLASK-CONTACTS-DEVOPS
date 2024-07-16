@@ -1,2 +1,5 @@
 .env
 .venv
+.vagrant/
+__pycache__/
+kubeconfig/

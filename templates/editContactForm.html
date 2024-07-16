@@ -1,22 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Contact</title>
-    <link rel="stylesheet" href="/static/styles/styles1.css">
-</head>
-<body>
-    <!-- Create a form titled "Edit Contact" with the following fields: -->
-    <!-- Name (required) -->
-    <!-- Email -->
-    <!-- Phone (required) -->
-    <!--gender -->
-    <!-- "I Agree" Checkbox (required) -->
-    <!-- "Update Contact" Button -->
+{% extends 'base.html' %}
+{% block title %}Edit Contacts Page{% endblock %}
+
+{% block content %}
     <h2 id="error">{{message}}</h2>
-    <form action="/saveUpdatedContact/{{contact.number if contact.number else contact._id}}" method="POST" enctype="multipart/form-data">
-        <h1>Edit Contact Form</h1>
+    <form class = "my-form" action="/saveUpdatedContact/{{contact.number if contact.number else contact._id}}" method="POST" enctype="multipart/form-data">
+        <h1>Edit Contact</h1>
         <!-- name -->
         <div>
             <label id="addNameLabel" for="addName">Enter your name:</label>
@@ -44,5 +32,4 @@
          <!-- submit -->
         <input type="submit" value="Save Changes">
     </form>
-</body>
-</html>
+{% endblock %}
