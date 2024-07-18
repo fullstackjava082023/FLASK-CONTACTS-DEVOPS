@@ -26,6 +26,12 @@ Vagrant.configure("2") do |config|
     desktop.vm.provision "shell", path: "provisions/install-jenkins.sh"
     # installing software needed for jinkins (docker kubectl)
     desktop.vm.provision "shell", path: "provisions/install-jenkins-sotware.sh"
+    # installing mysql
+    desktop.vm.provision "shell", path: "provisions/mysql-script.sh"
+
+    # installing python pip venv
+    desktop.vm.provision "shell", path: "provisions/python-pip-venv.sh"
+
     # starting mini kube on each boot
     # desktop.vm.provision "shell", inline: <<-SHELL, run: "always"
     #   # Other provisioning steps...

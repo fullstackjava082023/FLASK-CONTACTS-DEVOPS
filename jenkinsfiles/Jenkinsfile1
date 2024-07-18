@@ -1,0 +1,73 @@
+pipeline {
+    agent any
+
+    parameters {
+        choice(name: 'DATABASE_TYPE', choices: ['MYSQL', 'MONGO'], description: 'Select the database type')
+        string(name: 'DB_HOST', defaultValue: 'localhost', description: 'MySQL Database Host (used if DATABASE_TYPE is mysql)')
+        string(name: 'MONGO_URI', defaultValue: 'mongodb://localhost:27017', description: 'MongoDB URI (used if DATABASE_TYPE is mongo)')
+    }
+    
+    stages {
+        stage('Hello') {
+            steps {
+                echo 'Hello World'
+            }
+        }
+        stage ("Clean workspace") {
+              steps {
+                 // Clean before build
+                //  cleanWs()
+                 deleteDir()
+                }
+        }
+
+        stage('checkoutgit') {
+            steps {
+                echo 'checking out from git'
+            }
+        }
+         stage('Prepare') {
+            steps {
+                // Copy script file to Jenkins workspace (if needed)
+                sh 'cp -r /vagrant/. .'
+               
+            }
+        }
+         stage('Start Application') {
+            steps {
+                // Start the application
+                // Execute your setup script
+                    sh '''
+                    #!/bin/bash
+                    echo "Starting virtual environment setup"
+
+                    # Create virtual environment
+                    python3 -m venv .venv
+                    . .venv/bin/activate
+
+                    # Install Python dependencies from requirements.txt
+                    pip3 install -r requirements.txt
+
+                    # Optionally, run migrations if needed
+                    # python3 migrate.py
+                    nohup python3 app.py > app.log 2>&1 & 
+                    # sleep just to not kill a process for some time
+                    sleep 120
+                     # python3 app.py 
+                     echo "Application started in detached mode"
+                        
+                        # Verify the application is running
+                        ps aux | grep python3
+                    '''
+            }
+        }
+         stage('Verify Application') {
+            steps {
+                // Check if application is running by querying the port (example command)
+                sh 'sudo netstat -tulnep | grep 5052 || echo "Application not running"'
+            }
+        }
+
+
+    }
+}
