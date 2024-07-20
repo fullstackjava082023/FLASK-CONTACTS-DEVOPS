@@ -17,18 +17,25 @@ Vagrant.configure("2") do |config|
     # SHELL
 
     # Add port forwarding for port 8081
-    config.vm.network "forwarded_port", guest: 8080, host: 8081
+    # config.vm.network "forwarded_port", guest: 8080, host: 8080
+    # Add a private network with a specific IP address
+    desktop.vm.network "private_network", ip: "192.168.33.10"
+
     # Provisioning script for jenkins installation
     desktop.vm.provision "shell", path: "provisions/install-jenkins.sh"
     # installing software needed for jinkins (git docker kubectl)
     desktop.vm.provision "shell", path: "provisions/install-jenkins-sotware.sh"
     # starting mini kube on each boot
     desktop.vm.provision "shell", inline: <<-SHELL, run: "always"
-      # Other provisioning steps...
-      minikube start --driver=docker --user=vagrant vagran
-      # give permissions to the kubeconfig files
-      sudo chmod -R +r /home/vagrant/.minikube/
-      sudo chmod -R +r /home/vagrant/.kube/
+      # Ensure Docker is running
+    sudo systemctl start docker
+
+    # Start Minikube as the vagrant user
+    sudo -u vagrant sh -c "minikube start --driver=docker"
+
+    # Give permissions to the kubeconfig files
+    sudo chmod -R +r /home/vagrant/.minikube/
+    sudo chmod -R +r /home/vagrant/.kube/
     SHELL
 
     # Enable the GUI

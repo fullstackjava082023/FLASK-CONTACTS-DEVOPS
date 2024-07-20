@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-contacts-app
+  labels:
+    app: flask-contacts-app
+spec: #specification of the deployment
+  replicas: 2
+  selector:
+    matchLabels:
+      app: flask-contacts-app
+  template:
+    metadata:
+      labels:
+        app: flask-contacts-app
+    spec: #specification of the pod
+      volumes:
+      - name: static-files
+        hostPath:
+          # mounting to the host path 
+          path: /minikube-host/C/Users/Iliap/static-images
+        # persistentVolumeClaim:
+        #   claimName: static-files-pvc
+      containers:
+      - name: flask-contacts-app
+        image: shashkist/flask-contacts-app
+        ports:
+        - containerPort: 5052
+        volumeMounts:
+        - mountPath: /app/static/images
+          name: static-files
+        env:
+        - name: DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: mysql-configmap
+              key: database_url
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flask-contacts-app-service
+spec:
+  selector:
+    app: flask-contacts-app
+  type: LoadBalancer  
+  ports:
+    - protocol: TCP
+      port: 5053
+      targetPort: 5052
+      # nodePort: 30001        
+       

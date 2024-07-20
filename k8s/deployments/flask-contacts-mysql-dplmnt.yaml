@@ -4,7 +4,7 @@ metadata:
   name: flask-contacts-app
   labels:
     app: flask-contacts-app
-spec:
+spec: #specification of the deployment
   replicas: 2
   selector:
     matchLabels:
@@ -13,14 +13,14 @@ spec:
     metadata:
       labels:
         app: flask-contacts-app
-    spec:
+    spec: #specification of the pod
       volumes:
       - name: static-files
         persistentVolumeClaim:
           claimName: static-files-pvc
       containers:
       - name: flask-contacts-app
-        image: shashkist/flask-contacts-app:1.3
+        image: shashkist/flask-contacts-app
         ports:
         - containerPort: 5052
         volumeMounts:
