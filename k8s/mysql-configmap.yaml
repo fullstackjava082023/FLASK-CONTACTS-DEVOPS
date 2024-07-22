@@ -4,3 +4,6 @@ metadata:
   name: mysql-configmap
 data:
   database_url: mysql-service
+  my.cnf: | # This is the configuration file for MySQL
+    [mysqld]
+    transaction-isolation = READ-COMMITTED
