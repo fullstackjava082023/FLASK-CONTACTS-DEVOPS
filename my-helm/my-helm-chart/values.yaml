@@ -1,6 +1,10 @@
 # Default values for my-helm-chart.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
+staging:
+  sample-key: sample-12345
+
+env: production
 
 replicaCount: 1
 

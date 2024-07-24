@@ -102,3 +102,36 @@ helm create my-helm-chart
 
 # install the helm chart
 helm install my-helm-chart . 
+
+# go to helm directory
+cd .\my-helm\my-helm-chart\
+
+# install the chart
+helm install first-chart .
+
+# see that configmap is created
+kubectl get cm
+
+# describe the configmap
+kubectl describe cm first-chart-configmap
+
+# see the template of the chart
+helm template first-chart .
+
+# apply the change to the cluster
+helm upgrade first-chart .
+
+# describe the configmap
+kubectl describe cm first-chart-configmap
+
+# check helm history
+helm history first-chart
+
+# rollback to previous version
+helm rollback first-chart 
+
+# upgrade the chart
+helm upgrade first-chart .
+
+# see the cm
+kubectl get cm
