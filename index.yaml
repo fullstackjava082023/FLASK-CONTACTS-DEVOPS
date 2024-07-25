@@ -1,0 +1,18 @@
+apiVersion: v1
+entries:
+  first-chart:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-07-25T10:25:08.7104573+03:00"
+    dependencies:
+    - name: kube-state-metrics
+      repository: https://charts.bitnami.com/bitnami
+      version: 4.2.10
+    description: A Helm chart for Kubernetes
+    digest: 0717ecd5b73d343c276389813e86910c62c211fe0e7cc007c7fb7d2da8b525ff
+    name: first-chart
+    type: application
+    urls:
+    - https://fullstackjava082023.github.io/FLASK-CONTACTS-DEVOPS/first-chart-0.1.0.tgz
+    version: 0.1.0
+generated: "2024-07-25T10:25:08.70719+03:00"

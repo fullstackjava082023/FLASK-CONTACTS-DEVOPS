@@ -3,7 +3,8 @@ kind: ConfigMap
 metadata:
   name: mysql-configmap
 data:
-  database_url: my-mysql
+  database_url: mysql-service
+  # database_url: first-chart-mysql
   my.cnf: | # This is the configuration file for MySQL
     [mysqld]
     transaction-isolation = READ-COMMITTED

@@ -4,6 +4,12 @@
 
 replicaCount: 1
 
+auth:
+  password: admin
+
+mysql:
+  auth:
+    password: admin
 
 
 image:
@@ -12,7 +18,7 @@ image:
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
     tag: ""
-  flask-contacts-app:
+  flask_contacts_app:
     repository: shashkist/flask-contacts-app
     pullPolicy: IfNotPresent
     tag: ""

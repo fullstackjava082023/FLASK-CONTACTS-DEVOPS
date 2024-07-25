@@ -20,7 +20,7 @@ spec: #specification of the deployment
           claimName: static-files-pvc
       containers:
       - name: flask-contacts-app
-        image: {{ .Values.image.app.repository }}
+        image: {{ .Values.image.flask_contacts_app.repository }}
         ports:
         - containerPort: 5052
         volumeMounts:
@@ -32,6 +32,11 @@ spec: #specification of the deployment
             configMapKeyRef:
               name: mysql-configmap
               key: database_url
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-db-pass
+              key: db-password
 ---
 apiVersion: v1
 kind: Service
