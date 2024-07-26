@@ -50,5 +50,5 @@ spec:
     - protocol: TCP
       port: 5053
       targetPort: 5052
-      nodePort: 30001        
+      # nodePort: 30001   #better to use automatic allocation of nodePort     
        
