@@ -1,0 +1,45 @@
+--- 
+
+# This playbook installs Apache on all hosts in the inventory file.
+- hosts: webservers
+  become: yes
+  tasks:
+    - name: install apache and php with package
+      package:
+        name: 
+          - "{{ apache }}"
+          - "{{ php }}"
+        state: present
+      
+    - name: Start Apache Centos
+      service:
+        name: "{{ apache }}"
+        state: started
+        enabled: yes
+      when: ansible_distribution == 'CentOS'
+    
+    - name: Open port 80
+      firewalld:
+        port: 80/tcp
+        permanent: yes
+        state: enabled
+        immediate: yes
+      when: ansible_distribution == 'CentOS'
+    
+    - name: copy default_html.html
+      copy:
+        src: default_html.html
+        dest: /var/www/html/index.html
+        # notify: restart apache
+        owner: root
+        group: root
+        mode: 0644 # read and write for owner, read for group and others
+        
+- hosts: others
+  become: yes
+  tasks:
+  - name: install mariadb
+    package:
+      name: mariadb-server
+      state: present
+      

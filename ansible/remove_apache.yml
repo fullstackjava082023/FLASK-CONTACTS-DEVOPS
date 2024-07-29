@@ -1,0 +1,24 @@
+--- 
+
+# This playbook installs Apache on all hosts in the inventory file.
+- hosts: all
+  become: yes
+  tasks:
+    # In Ansible, the update_cache parameter is used within the apt module
+    # to update the package index cache before installing packages. 
+    # This ensures that you have the latest information about available packages and their versions.
+    - name: remove Apache
+      package:
+        name: 
+          - "{{ apache }}"
+          - "{{ php }}"
+        # make sure the version is the latest
+        state: absent
+        update_cache: yes
+  
+        
+# exercise remove apache and php using variables and when sytax
+# check that apache and php are removed
+# run the playbook to install apache and php again
+# remove apache and php using the variables + package module
+# check that apache and php are removed
