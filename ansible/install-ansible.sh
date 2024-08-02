@@ -1,2 +1,3 @@
 # install ansible
-sudo apt install git ansible -y
+sudo apt update
+sudo apt install ansible -y

@@ -43,3 +43,13 @@ ansible all -m apt -a "name=snapd state=latest"
 # It is more aggressive than upgrade and can be used for system upgrades, such as moving to a new release of the distribution.
 ansible all -m apt -a "upgrade=dist"
 
+# checking users in the linux
+ansible all -m shell -a "cat /etc/passwd" #  "cat /etc/passwd | cut -d: -f1"
+# The string arja:x:1001:0::/home/arja:/bin/bash 
+# arja: The username. This is the name of the user account.
+# x: The password placeholder. Modern Unix systems use shadow passwords, so the actual password is stored in the /etc/shadow file. The x indicates that the password is in the shadow file.
+# 1001: The user ID (UID). This is a unique number assigned to the user. User IDs typically start from 1000 for regular users.
+# 0: The group ID (GID). This is the primary group ID associated with the user. 0 usually corresponds to the root group, which means this user is associated with the root group.
+# `` (empty field): The GECOS field. It is typically used to store additional information about the user, such as their full name or contact details. In this case, it is empty.
+# /home/arja: The home directory. This is the path to the user’s home directory, where personal files and configuration settings are stored.
+# /bin/bash: The login shell. This is the path to the command-line shell that is started when the user logs in. In this case, it is /bin/bash, the Bourne Again Shell (bash).

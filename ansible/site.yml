@@ -1,0 +1,27 @@
+--- 
+
+# This playbook creating a users
+- hosts: all
+  become: true 
+  tasks:
+    - name: create a Arja user add to root group
+      user:
+        name: arja
+        group: root
+
+    - name: add ssh key to arja user
+      authorized_key:
+        user: arja
+        key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC5xZiDe77weEmmJBE6ftarHv3La74nePCMYhLutOh4gCPNLeP1vVAtVmLVqbb+ZAAEUSv0o/pPAUtOdjTH0jdj8lv3bQUxOv/hWsHxKVWQi56kSEBXKI5f62IofVdIzT6nyScOE8druVYa9CFEosybfKtUtcyVdRjd4eqLrfZIIEIFPzsVF0+2Xrdt1ccXcnA2mmX9mdBkigEOm3rNV0JlXN4EiVgaQvqOCkH3rjgWh+v5ri8Minx9bRBQTfPwk+fviej1rgOVJAOz8rN9ishFcKJTLYVccWLNsgiqjG05Jc6JPocu/UMiW8klNuCAINGSIoLfkwNzSW3L1WOEtB27IbQ6WkBIQqocpzP4U3l48tIwCwiel7N1jBWwzVHYRfxJ64XDIikRb8JLJaV9nSzNX5wUYTeQahSDVTMNj3l7QQMWj0jPsDVfN5hGVT5dcfkOJ492Oql/ruuIM+Ye5QbEqIBSWP+gMKqsm9wP7lHWOZyt6g6hQr6cqwD0J+y7Rg+sOP3ZKlaBal0tgTnl1cJ8x9s3flKwbXi0vDAtTM7vnVfyRujXxC7N5/U6N1IsCsYmqJomtPtartrNtVIv8QARzf1nze3CvwY9/YCm10k9eY0L3i1vq9gdPagEFmjZSOSgP+j08bnD7xBbpI72/JExY/sLmb7vwyUNQum1dBBwSw== shashkist@gmail.com"
+
+    # allow arja to run sudo without password
+    - name: add sudoers file for arja
+      tags: always
+      copy:
+        src: sudoers
+        dest: /etc/sudoers.d/arja
+        owner: root
+        group: root
+        mode: 0440
+        
+     

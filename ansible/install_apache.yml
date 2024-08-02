@@ -2,7 +2,7 @@
 
 # This playbook installs Apache on all hosts in the inventory file.
 - hosts: webservers
-  become: yes
+  become: true
   tasks:
     - name: install apache and php with package
       package:
