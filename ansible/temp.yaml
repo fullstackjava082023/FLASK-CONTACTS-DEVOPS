@@ -1,0 +1,20 @@
+--- 
+
+# This playbook installs Apache on all hosts in the inventory file.
+- hosts: all
+  become: true
+  tasks:
+  - name: update repository
+    apt:
+      update_cache: yes
+
+  - name: Install apache2 packages
+    apt:
+      name: apache2
+      state: latest
+
+  - name: add php support
+    apt:
+      name: libapache2-mod-php
+      state: latest
+      

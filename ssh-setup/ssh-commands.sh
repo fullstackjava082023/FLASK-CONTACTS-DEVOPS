@@ -27,7 +27,7 @@ cat ~/.ssh/id_ed25519.pub
 cat ~/.ssh/id_ed25519
 
 # now copy the public key to the remote server
-ssh-copy-id -i ~/.ssh/id_ed25519.pub root@172.232.206.211
+ssh-copy-id -i ~/.ssh/id_ed25519.pub root@172.232.193.165
 
 # now you can ssh to the remote server without password
 ssh root@172.232.206.211

@@ -1,0 +1,29 @@
+--- 
+
+# This playbook installs Apache on all hosts in the inventory file.
+- hosts: all
+  become: true
+  tasks:
+
+  - name: Install apache and php packages
+    package:
+      name: 
+        - "{{ apache }}"
+        - "{{ php }}"
+      update_cache: yes  
+      state: latest
+
+  - name: Start Apache Centos
+    service:
+      name: "{{ apache }}"
+      state: started
+      enabled: yes
+    when: ansible_distribution == 'CentOS'
+
+  - name: Open port 80
+    firewalld:
+      port: 80/tcp
+      permanent: yes
+      state: enabled
+      immediate: yes
+    when: ansible_distribution == 'CentOS'

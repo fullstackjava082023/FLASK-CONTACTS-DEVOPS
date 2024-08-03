@@ -1,0 +1,23 @@
+---
+- name: Fetch Linode instances and their tags
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: List all Linode instances
+      uri:
+        url: "https://api.linode.com/v4/linode/instances"
+        method: GET
+        headers:
+          Authorization: "Bearer 3f681ba697efbbf3b54206f58ba1c175621ece2ccb4d5dee27e2432a1fe09ea7"
+        return_content: yes
+      register: linode_response
+
+    - name: Print Linode instances
+      debug:
+        msg: |
+          Linode Instances:
+          {% for instance in linode_response.json.data %}
+            - Name: {{ instance.label }}
+              ID: {{ instance.id }}
+              Tags: {{ instance.tags | join(', ') }}
+          {% endfor %}

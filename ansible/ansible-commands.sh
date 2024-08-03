@@ -29,12 +29,31 @@ ansible all -m apt -a update_cache=yes --become --ask-become-pass
 # install vim-nox package on all servers  --become --ask-become-pass
 ansible all -m apt -a name=vim-nox
 
+# check if vim-nox is installed on all servers
+# inside the remote server
+apt search vim-nox
+
+
 # install tmux package on all servers
+# tmux is a terminal multiplexer
 ansible all -m apt -a name=tmux
 # "changed": false = already installed
 
 # update snapd package on all servers to the latest version
 ansible all -m apt -a "name=snapd state=latest"
+
+# copy file from /vagrant/ansible_lab/install_apache.yml to ~/ansible_lab/install_apache.yml force replace regular linux command
+cp -f /vagrant/ansible-lab/install_apache.yml ~/ansible-lab/install_apache.yml
+cp -f /vagrant/ansible-lab/inventory.ini ~/ansible-lab/inventory.ini
+# copy file from /vagrant/ansible_lab/site.yml to ~/ansible_lab/site.yml force replace regular linux command
+cp -f /vagrant/ansible-lab/site.yml ~/ansible-lab/site.yml
+cp -rf /vagrant/ansible-lab ~/ansible-lab
+
+#open port 80 to all servers by linux (not ansible) command centos ufw?
+# open port 80 to all servers
+sudo ufw allow 80
+
+
 
 # install dist upgrade on all servers
 # dist-upgraden 

@@ -1,0 +1,2 @@
+# sudo access on the linus server
+arja ALL=(ALL) NOPASSWD: ALL

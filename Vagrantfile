@@ -25,6 +25,10 @@ Vagrant.configure("2") do |config|
     desktop.vm.provision "shell", path: "provisions/install-jenkins.sh"
     # installing software needed for jinkins (git docker kubectl)
     desktop.vm.provision "shell", path: "provisions/install-jenkins-sotware.sh"
+    # # installing ansible
+    # desktop.vm.provision "shell", path: "provisions/install-ansible.sh"
+
+    
     # starting mini kube on each boot
     desktop.vm.provision "shell", inline: <<-SHELL, run: "always"
       # Ensure Docker is running
@@ -42,7 +46,8 @@ Vagrant.configure("2") do |config|
     # Enable drag and drop
     desktop.vm.provider "virtualbox" do |vb|
       vb.gui = true
-      vb.memory = "2048"
+      vb.memory = "4096"
+      vb.cpus = 3
       vb.name = "JenkinsUbuntuVagrantBox" 
       vb.customize ["modifyvm", :id, "--draganddrop", "bidirectional"]
       vb.customize ["modifyvm", :id, "--clipboard", "bidirectional"]
