@@ -1,0 +1,8 @@
+---
+- name: Copy a directory and override existing files on localhost
+  hosts: localhost
+  become: true
+  tasks:
+    - name: Copy directory to destination on localhost
+      command:
+        cmd: cp -r --remove-destination /vagrant/ansible-lab/ ~/ansible-lab/

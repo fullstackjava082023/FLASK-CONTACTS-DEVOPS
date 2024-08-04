@@ -47,7 +47,8 @@ cp -f /vagrant/ansible-lab/install_apache.yml ~/ansible-lab/install_apache.yml
 cp -f /vagrant/ansible-lab/inventory.ini ~/ansible-lab/inventory.ini
 # copy file from /vagrant/ansible_lab/site.yml to ~/ansible_lab/site.yml force replace regular linux command
 cp -f /vagrant/ansible-lab/site.yml ~/ansible-lab/site.yml
-cp -rf /vagrant/ansible-lab ~/ansible-lab
+# copy all files from /vagrant/ansible_lab/ to ~/ansible_lab/ force replace regular linux command
+cp -r --remove-destination /vagrant/ansible-lab/*  ~/ansible-lab/
 
 #open port 80 to all servers by linux (not ansible) command centos ufw?
 # open port 80 to all servers
