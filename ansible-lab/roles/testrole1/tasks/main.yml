@@ -1,0 +1,5 @@
+---
+# tasks file 
+- name: Test hello world
+  debug:
+    msg: "hello world!, {{myvar}}"

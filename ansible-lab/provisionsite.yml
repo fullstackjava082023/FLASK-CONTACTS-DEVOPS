@@ -1,0 +1,5 @@
+# This playbook installs Apache on all hosts in the inventory file.
+- hosts: all
+  become: true
+  roles:
+    - provisionsite

@@ -1,0 +1,34 @@
+---
+- name: Install apache and php packages
+  tags: apache, php, install
+  package:
+    name: 
+      - "{{ apache }}"
+      - "{{ php }}"
+    update_cache: yes  
+    state: latest
+
+- name: Start Apache Centos
+  tags: apache, start
+  service:
+    name: "{{ apache }}"
+    state: started
+    enabled: yes
+  when: ansible_distribution == 'CentOS'
+
+- name: Open port 80
+  firewalld:
+    port: 80/tcp
+    permanent: yes
+    state: enabled
+    immediate: yes
+  when: ansible_distribution == 'CentOS'
+
+- name: copy default html file for site
+  tags: html
+  template:
+    src: index.html.j2
+    dest: /var/www/html/index.html
+    owner: root
+    group: root
+  # notify: restart apache
