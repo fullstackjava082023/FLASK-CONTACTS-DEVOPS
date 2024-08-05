@@ -1,5 +1,6 @@
 services:
   my-app:
+    build: .
     image: shashkist/flask-contacts-app:1.4
     container_name: my-app-mongo
     ports:
