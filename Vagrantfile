@@ -28,14 +28,14 @@ Vagrant.configure("2") do |config|
     # starting mini kube on each boot
     desktop.vm.provision "shell", inline: <<-SHELL, run: "always"
       # Ensure Docker is running
-    sudo systemctl start docker
+      sudo systemctl start docker
 
-    # Start Minikube as the vagrant user
-    sudo -u vagrant sh -c "minikube start --driver=docker"
+      # Start Minikube as the vagrant user
+      sudo -u vagrant sh -c "minikube start --driver=docker"
 
-    # Give permissions to the kubeconfig files
-    sudo chmod -R +r /home/vagrant/.minikube/
-    sudo chmod -R +r /home/vagrant/.kube/
+      # Give permissions to the kubeconfig files
+      sudo chmod -R +r /home/vagrant/.minikube/
+      sudo chmod -R +r /home/vagrant/.kube/
     SHELL
 
     # Enable the GUI
