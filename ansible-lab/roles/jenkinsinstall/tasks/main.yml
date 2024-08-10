@@ -1,0 +1,62 @@
+---
+
+- name: Update apt repo and cache (Ubuntu)
+  apt:
+    update_cache: yes
+  when: ansible_os_family == 'Debian'
+
+- name: Update yum repo and cache (CentOS)
+  yum:
+    name: '*'
+    state: latest
+  when: ansible_os_family == 'RedHat'
+
+- name: Install Java (Ubuntu)
+  apt:
+    name: openjdk-11-jdk
+    state: present
+  when: ansible_os_family == 'Debian'
+
+- name: Install Java (CentOS)
+  yum:
+    name: java-11-openjdk
+    state: present
+  when: ansible_os_family == 'RedHat'
+
+- name: Add Jenkins repository key (Ubuntu)
+  apt_key:
+    url: https://pkg.jenkins.io/debian/jenkins.io.key
+    state: present
+  when: ansible_os_family == 'Debian'
+
+- name: Add Jenkins repository (Ubuntu)
+  apt_repository:
+    repo: 'deb http://pkg.jenkins.io/debian-stable binary/'
+    state: present
+  when: ansible_os_family == 'Debian'
+
+- name: Add Jenkins repository (CentOS)
+  yum_repository:
+    name: Jenkins
+    description: Jenkins repo
+    baseurl: http://pkg.jenkins.io/redhat-stable/
+    gpgcheck: no
+  when: ansible_os_family == 'RedHat'
+
+- name: Install Jenkins
+  apt:
+    name: jenkins
+    state: present
+  when: ansible_os_family == 'Debian'
+
+- name: Install Jenkins
+  yum:
+    name: jenkins
+    state: present
+  when: ansible_os_family == 'RedHat'
+
+- name: Start Jenkins service
+  service:
+    name: jenkins
+    state: started
+    enabled: yes

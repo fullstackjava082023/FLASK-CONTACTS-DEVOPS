@@ -1,0 +1,6 @@
+-
+  name: Install and Configure MySQL
+  hosts: db_servers
+  roles:
+  - geerlingguy.mysql
+

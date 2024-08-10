@@ -1,0 +1,81 @@
+- name: run the flask webhook catcher application
+  hosts: web_servers
+  become: yes
+  tasks:
+    - name: Install Python3-venv
+      package:
+        name: python3-venv
+        state: present
+
+    - name: Install UFW
+      package:
+        name: ufw
+        state: present
+
+    - name: Allow port 5000 through the firewall
+      ufw:
+        rule: allow
+        port: '5000'
+        proto: tcp
+
+    - name: Enable UFW
+      ufw:
+        state: enabled
+        policy: allow
+
+    - name: Copy src_folder to remote host
+      copy:
+        src: webhooks/
+        dest: /opt/webhooks/
+        owner: root
+        group: root
+        mode: '0755'
+
+    - name: Create virtual environment
+      command: python3 -m venv /opt/webhooks/venv
+      args:
+        creates: /opt/webhooks/venv
+
+    # - name: Install required Python packages
+    #   pip:
+    #     requirements: /opt/webhooks/requirements.txt
+    #     virtualenv: /opt/webhooks/venv
+
+    - name: Stop existing Flask application
+      tags: start, flask
+      shell: |
+        if pkill -f 'flask'; then
+          echo "Flask process stopped successfully"
+        else
+          echo "No Flask process found or error stopping it"
+        fi
+        sleep 4  # Wait for a short while to ensure the process has stopped
+      ignore_errors: yes
+
+    - name: Stop any process running on port 5000
+      tags: start, flask
+      shell: |
+        fuser -k 5000/tcp || true
+      ignore_errors: yes
+
+    - name: Ensure the Flask application is running
+      tags: start, flask
+      shell: |
+        . /opt/webhooks/venv/bin/activate
+        pip install flask
+        nohup python /opt/webhooks/app.py > /opt/webhooks/flask.log 2>&1 &
+      register: flask_start
+      
+    
+    - name: Debug Flask start output
+      tags: start, flask
+      debug:
+        var: flask_start
+    
+    # # task to run flask application
+    # - name: Run Flask application
+    #   tags: start, flask
+    #   command: nohup flask run --host=0.0.0.0 --port=5000 > /opt/webhooks/flask.log 2>&1 &
+
+
+      

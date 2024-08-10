@@ -3,3 +3,6 @@
 .vagrant/
 __pycache__/
 kubeconfig/
+
+**/.terraform/
+.terraform
