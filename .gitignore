@@ -6,3 +6,4 @@ kubeconfig/
 
 **/.terraform/
 .terraform
+variables.tf

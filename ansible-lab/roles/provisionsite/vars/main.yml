@@ -1,0 +1,3 @@
+---
+apache: "{{ ansible_distribution == 'Ubuntu' and 'apache2' or 'httpd' }}"
+php: "{{ ansible_distribution == 'Ubuntu' and 'libapache2-mod-php' or 'php' }}"
