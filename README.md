@@ -1,6 +1,6 @@
 # Project Name
 
-A brief description of the project, what it does, and its main features.
+A brief description of the project, what it does, and its main features .
 
 ## Table of Contents
 
