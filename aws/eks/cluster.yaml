@@ -1,0 +1,16 @@
+---
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: aws-eks
+  region: us-east-1
+  tags:
+    project: devops2023
+
+nodeGroups:
+  - name: worker
+    instanceType: t3.micro  # Changed to a cheaper instance type
+    desiredCapacity: 2
+  
+  
