@@ -10,7 +10,7 @@ metadata:
 
 nodeGroups:
   - name: worker
-    instanceType: t3.micro  # Changed to a cheaper instance type
+    instanceType: t3.small  # Changed to a cheaper instance type
     desiredCapacity: 2
   
   

@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quote-app
+  labels:
+    app: quote-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: quote-app
+  template:
+    metadata:
+      labels:
+        app: quote-app
+    spec:
+      containers:
+      - name: quote-app
+        image: datawire/quote:0.5.0
+        ports:
+        - containerPort: 80

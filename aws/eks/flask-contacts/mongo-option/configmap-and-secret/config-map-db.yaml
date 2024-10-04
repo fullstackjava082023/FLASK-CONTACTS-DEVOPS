@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: flask-mongo-config
+data:
+  # db_url: "mysql-service"
+  db_type: "MONGO"
+  mongo_url: "mongodb://mongo-service:27017"
+  mongodb_host: "mongo-service"
+  # my.cnf: | # This is the configuration file for MySQL
+  #   [mysqld]
+  #   transaction-isolation = READ-COMMITTED

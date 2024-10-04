@@ -26,7 +26,7 @@ Vagrant.configure("2") do |config|
     # installing software needed for jinkins (git docker kubectl)
     desktop.vm.provision "shell", path: "provisions/install-jenkins-sotware.sh"
     # # installing ansible
-    # desktop.vm.provision "shell", path: "provisions/install-ansible.sh"
+    desktop.vm.provision "shell", path: "provisions/install-ansible.sh"
 
     
     # starting mini kube on each boot
@@ -35,7 +35,7 @@ Vagrant.configure("2") do |config|
     sudo systemctl start docker
 
     # Start Minikube as the vagrant user
-    sudo -u vagrant sh -c "minikube start --driver=docker"
+    # sudo -u vagrant sh -c "minikube start --driver=docker"
 
     # Give permissions to the kubeconfig files
     sudo chmod -R +r /home/vagrant/.minikube/
@@ -55,7 +55,7 @@ Vagrant.configure("2") do |config|
 
     # Synced folder
     desktop.vm.synced_folder ".", "/vagrant", type: "virtualbox"
-    desktop.vm.synced_folder "./kubeconfig", "/home/vagrant/.kube", type: "virtualbox"
+    # desktop.vm.synced_folder "./kubeconfig", "/home/vagrant/.kube", type: "virtualbox"
 
     
    

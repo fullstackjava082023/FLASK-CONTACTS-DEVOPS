@@ -13,13 +13,13 @@
 
 - name: Install Java (Ubuntu)
   apt:
-    name: openjdk-11-jdk
+    name: openjdk-17-jdk
     state: present
   when: ansible_os_family == 'Debian'
 
 - name: Install Java (CentOS)
   yum:
-    name: java-11-openjdk
+    name: java-17-openjdk
     state: present
   when: ansible_os_family == 'RedHat'
 
