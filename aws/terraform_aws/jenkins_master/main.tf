@@ -20,6 +20,19 @@ resource "aws_instance" "jenkins_master" {
     Name = "Jenkins-Master"
   }
 
+  
+
+  provisioner "remote-exec" {
+    inline = [ "sudo apt update" ]
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = file("~/.aws/id_ed25519")
+      host        = self.public_ip
+    }
+  
+  }
+
   # Optional: Specify IAM instance profile if needed
   iam_instance_profile = "EC2-Admin"
   
@@ -35,4 +48,8 @@ resource "aws_instance" "jenkins_master" {
 resource "aws_eip_association" "eip_association" {
   instance_id   = aws_instance.jenkins_master.id
   public_ip = data.aws_eip.existing_eip.public_ip
+}
+
+output "IP" {
+    value = aws_instance.jenkins_master.public_ip
 }

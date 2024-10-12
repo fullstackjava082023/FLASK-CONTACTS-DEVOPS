@@ -57,7 +57,24 @@ module "eks" {
     Terraform   = "true"
   }
 
-  authentication_mode = "API_AND_CONFIG_MAP"
+#   authentication_mode = "API_AND_CONFIG_MAP"
+
+   access_entries = {
+    jenkins_access = {
+      kubernetes_groups = []  # Add any necessary groups
+      principal_arn     = "arn:aws:iam::590183884095:role/EC2-Admin"  # Your Jenkins role
+
+      policy_associations = {
+        view_policy = {
+          policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSViewPolicy"
+          access_scope = {
+            namespaces = ["default"]  # Specify any namespaces
+            type       = "namespace"
+          }
+        }
+      }
+    }
+  }
 }
 
 # # Output the cluster kubeconfig
