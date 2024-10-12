@@ -1,6 +1,12 @@
 from flask import Flask, render_template, request, redirect
 from dotenv import load_dotenv
 import os
+from prometheus_flask_exporter import PrometheusMetrics
+
+app = Flask(__name__)
+
+metrics = PrometheusMetrics(app)
+
 load_dotenv()
 
 
@@ -19,10 +25,13 @@ elif db_to_use == "MONGO":
                             create_contact,
                             delete_contact, update_contact_in_db)
 
-app = Flask(__name__)
 
 
-
+# @app.route('/metrics')
+# def custom_metrics():
+#     accept_header = request.headers.get('Accept')
+#     generated_content, content_type = metrics.generate_metrics(accept_header=accept_header)
+#     return generated_content, 200, {'Content-Type': content_type}
 
 @app.route('/')
 def hello():
@@ -93,4 +102,4 @@ def search():
 
 
 if __name__ == '__main__':
-    app.run(debug=True ,port=5052,  host='0.0.0.0')
+    app.run(port=5052, host='0.0.0.0')
