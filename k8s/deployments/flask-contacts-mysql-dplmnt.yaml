@@ -37,12 +37,15 @@ apiVersion: v1
 kind: Service
 metadata:
   name: flask-contacts-app-service
+  labels:
+    app: flask-contacts-service  # added the label here
 spec:
   selector:
     app: flask-contacts-app
   type: LoadBalancer  
   ports:
-    - protocol: TCP
+    - name: flask-contacts-service
+      protocol: TCP
       port: 5053
       targetPort: 5052
       # nodePort: 30001        
