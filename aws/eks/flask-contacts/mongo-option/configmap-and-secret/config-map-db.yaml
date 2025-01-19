@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: flask-mongo-config
+  name: flask-config
 data:
   # db_url: "mysql-service"
   db_type: "MONGO"

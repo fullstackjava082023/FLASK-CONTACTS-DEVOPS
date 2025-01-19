@@ -1,0 +1,20 @@
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: AlertmanagerConfig
+metadata:
+  name: example-alertmanagerconfig
+  labels:
+    prometheus: example
+    role: alertmanager
+    release: prometheus
+spec:
+  # alertmanagerConfigSelector: {}
+  receivers:
+  #  - name: slack-receiver
+  #    slackConfigs:
+  #     - channel: "#alerts" # your channel name that you have created
+  #       sendResolved: true
+  #       iconEmoji: ":bell:"
+   - name: webhook-receiver
+     webhookConfigs:
+       - url: "http://alert-service.jenkins.svc.cluster.local:5054/alert"
+         sendResolved: true

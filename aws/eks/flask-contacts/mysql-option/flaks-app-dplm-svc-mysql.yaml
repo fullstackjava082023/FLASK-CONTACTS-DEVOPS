@@ -16,20 +16,18 @@ spec:
     spec:
       containers:
       - name: flask-contacts-app
-        image: shashkist/flask-contacts-app:1.4
+        image: shashkist/flask-contacts-app
         ports:
         - containerPort: 5052
         env:
-        - name: DATABASE_TYPE
-          valueFrom:
-            configMapKeyRef:
-              name: flask-config
-              key: db_type
-        - name: MONGO_URI
-          valueFrom:
-            configMapKeyRef:
-              name: flask-config
-              key: mongo_url
+        - name: DB_HOST
+          value: database-1.ctsq2w8muuqh.us-east-1.rds.amazonaws.com
+        - name: DB_USER
+          value: root
+        - name: DB_PASSWORD
+          value: "12345678"       
+
+       
 ---
 apiVersion: v1
 kind: Service
@@ -44,6 +42,6 @@ spec:
   ports:
     - name: flask-contacts-service #this port name should be mapped by service monitor
       protocol: TCP
-      port: 5053
+      port: 5055
       targetPort: 5052
        

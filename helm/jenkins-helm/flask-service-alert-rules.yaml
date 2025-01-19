@@ -5,13 +5,14 @@ metadata:
   namespace: jenkins
   labels:
     prometheus: flask-service-alerts
+    release: prometheus
 spec:
   groups:
     - name: flask_service_alerts
       rules:
         - alert: FlaskServiceDown
-          expr: up{service="flask-contacts-app-service"} == 0
-          for: 1m
+          expr: absent(up{service="flask-contacts-app-service"})
+          for: 20s
           labels:
             severity: critical
           annotations:

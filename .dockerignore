@@ -1,1 +1,14 @@
 .env
+.venv
+.vagrant/
+__pycache__/
+kubeconfig/
+
+**/.terraform/
+.terraform
+.terraform/
+.terraform/modules/
+variables.tf
+
+*.tfstate
+*.tfstate.*

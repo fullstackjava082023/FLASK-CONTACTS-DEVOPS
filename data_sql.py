@@ -30,7 +30,15 @@ def create_contacts_table():
                    "gender VARCHAR(10),"
                    "photo  VARCHAR(255))")
     db.commit()
-    print("Table created successfully")
+    print("Contacts Table created successfully")
+
+def create_alerts_table():
+    cursor.execute("CREATE TABLE IF NOT EXISTS alerts ("
+                   "id INT AUTO_INCREMENT PRIMARY KEY,"
+                   "alert TEXT)")
+    
+    db.commit()
+    print("Alerts Table created successfully")
 
 
 
@@ -38,6 +46,13 @@ def create_contacts_table():
 cursor = db.cursor(dictionary=True)
 create_db()
 create_contacts_table()
+
+
+# adding an alert to the database
+def add_alert(data):
+    cursor.execute("INSERT INTO alerts (alert) VALUES (%s)", (data))
+    db.commit()
+    return "Alert added successfully"
 
 
 def get_contacts():

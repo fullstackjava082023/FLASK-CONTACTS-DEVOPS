@@ -2,12 +2,17 @@ from flask import Flask, render_template, request, redirect
 from dotenv import load_dotenv
 import os
 from prometheus_flask_exporter import PrometheusMetrics
+from prometheus_client import Gauge
 
 app = Flask(__name__)
 
 metrics = PrometheusMetrics(app)
 
 load_dotenv()
+
+# Define a custom metric for total contacts count
+total_contacts_metric = Gauge('contacts_total', 'Total number of contacts in the system')
+
 
 
 # Retrieve the DATABASE_TYPE environment variable, defaulting to 'MYSQL' if not set
@@ -17,13 +22,13 @@ if db_to_use == "MYSQL":
     from data_sql import (get_contacts, findByNumber,
                           check_contact_exist, search_contacts,
                           create_contact,
-                          delete_contact, update_contact_in_db)
+                          delete_contact, update_contact_in_db, add_alert)
     
 elif db_to_use == "MONGO":
     from data_mongo import (get_contacts, findByNumber,
                             check_contact_exist, search_contacts,
                             create_contact,
-                            delete_contact, update_contact_in_db)
+                            delete_contact, update_contact_in_db, add_alert)
 
 
 
@@ -46,8 +51,10 @@ def addContact():
 # route to view the contact list
 @app.route('/viewContacts')
 def viewContacts():
-    print(get_contacts())
-    return render_template('index.html', contacts=get_contacts())
+    contacts=get_contacts()
+    total_contacts_metric.set(len(contacts))
+    print(contacts)
+    return render_template('index.html', contacts=contacts)
 
 
 
@@ -67,6 +74,7 @@ def createContact():
             photo.save(file_path)
         # create a new contact
         create_contact(fullname, phone, email, gender, f'{fullname}.jpg')
+        total_contacts_metric.set(len(get_contacts()))
     else:
         return render_template('addContactForm.html', message='Contact already exists')
     return redirect('/viewContacts')
@@ -74,7 +82,16 @@ def createContact():
 @app.route('/deleteContact/<number>')
 def deleteContact(number):
     delete_contact(number)
+    total_contacts_metric.set(len(get_contacts()))  # Update the total contacts count
     return redirect('/viewContacts')
+
+
+@app.route('/alert', methods=['POST'])
+def alert():
+    data = request.json
+    print("Received Alert: ", data)  # Print the alert data to the console
+    add_alert(data)  # Add the alert data to the database
+    return "OK", 200
 
 
 @app.route('/editContact/<number>')

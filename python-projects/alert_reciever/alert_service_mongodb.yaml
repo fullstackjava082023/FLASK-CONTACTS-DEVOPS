@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alert-service
+  labels:
+    app: alert-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: alert-service
+  template:
+    metadata:
+      labels:
+        app: alert-service
+    spec:
+      containers:
+      - name: alert-service
+        image: shashkist/alert-service
+        ports:
+        - containerPort: 5000
+        env:
+        - name: MONGO_URI
+          valueFrom:
+            configMapKeyRef:
+              name: flask-mongo-config
+              key: mongo_url
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: alert-service
+  labels:
+    app: alert-service # this should be mapped by service monitor
+spec:
+  selector:
+    app: alert-service
+  type: ClusterIP  
+  ports:
+    - name: alert-service # this port name should be mapped by service monitor
+      protocol: TCP
+      port: 5054
+      targetPort: 5000
+       

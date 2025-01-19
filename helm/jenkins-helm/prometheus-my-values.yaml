@@ -1,18 +1,15 @@
-customRules:
-  flask_service_alerts:
-    groups:
-      - name: flask_service_alerts
-        rules:
-          - alert: FlaskServiceDown
-            expr: up{service="flask-contacts-app-service"} == 0
-            for: 1m
-            labels:
-              severity: critical
-            annotations:
-              summary: "Flask Service is Down"
-              description: "The Flask service (flask-contacts-app-service) is not responding for more than 1 minute."
-prometheus:
-  prometheusSpec:
-    ruleSelector:
-      matchLabels:
-        prometheus: flask-service-alerts
+alertmanager:
+  config:
+    route:
+      receiver: 'null' # default receiver
+      routes: 
+      - match: 
+          alertname: FlaskServiceDown # alert name
+        receiver: 'webhook-receiver' # receiver name
+        continue: true # continue to evaluate other routes
+    receivers:
+    - name: 'null'
+    - name: 'webhook-receiver'
+      webhook_configs:
+      - url: "http://alert-service.jenkins.svc.cluster.local:5054/alert"
+        send_resolved: true

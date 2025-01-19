@@ -7,6 +7,7 @@ load_dotenv()
 my_client = pymongo.MongoClient(os.getenv("MONGO_URI", "mongodb://localhost:27017/"))
 mydb = my_client[os.getenv("DB_NAME", "contacts_app")]
 my_collection = mydb["contacts"]
+alerts_collection = mydb["alerts"]
 
 # implementation of the functions
 # get_contacts, findByNumber, check_contact_exist,
@@ -46,6 +47,12 @@ def create_contact(name, phone, email, gender, photo):
 def delete_contact(number):
     my_collection.delete_one({"_id": ObjectId(number)})
     return "Contact deleted successfully"
+
+
+# adding an alert to the database
+def add_alert(data):
+    alerts_collection.insert_one({"data": data})
+    return "Alert deleted successfully"
 
 
 def update_contact_in_db(number, name, phone, email, gender):

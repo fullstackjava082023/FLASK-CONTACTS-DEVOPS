@@ -87,7 +87,7 @@ kubectl apply -f - <<EOF
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: flask-mongo-config
+  name: flask-config
 data:
   # db_url: "mysql-service"
   db_type: "MONGO"
@@ -122,12 +122,12 @@ spec:
         - name: DATABASE_TYPE
           valueFrom:
             configMapKeyRef:
-              name: flask-mongo-config
+              name: flask-config
               key: db_type
         - name: MONGO_URI
           valueFrom:
             configMapKeyRef:
-              name: flask-mongo-config
+              name: flask-config
               key: mongo_url
 ---
 apiVersion: v1
@@ -141,7 +141,7 @@ spec:
     app: flask-contacts-app
   type: LoadBalancer  
   ports:
-    - name: flask-contacts-service #this port name should be mapped by service monitor
+    - name: flask-contacts-service # this port name should be mapped by service monitor
       protocol: TCP
       port: 5053
       targetPort: 5052
@@ -150,6 +150,58 @@ EOF
                 }
             }
         }
+         stage('crete mongo-express') {
+            steps {
+                container('helm-pod') {
+                    sh '''
+kubectl apply -f - <<EOF
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo-express
+  labels:
+    app: mongo-express
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo-express
+  template:
+    metadata:
+      labels:
+        app: mongo-express
+    spec:
+      containers:
+      - name: mongo-express
+        image: mongo-express
+        ports:
+        - containerPort: 8081
+        env:
+        - name: ME_CONFIG_MONGODB_SERVER
+          valueFrom:
+            configMapKeyRef:
+              name: flask-config
+              key: mongodb_host
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-express-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: mongo-express
+  ports:
+    - protocol: TCP
+      port: 8081
+      targetPort: 8081
+
+
+EOF
+'''
+                }
+            }
+          }
          stage('add service monitor for flask') {
             steps {
                 container('helm-pod') {
@@ -175,6 +227,36 @@ EOF
                 }
             }
          }
-        
+         stage('create prometheus rule for flask') {
+            steps {
+                container('helm-pod') {
+                    sh '''
+kubectl apply -f - <<EOF
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: flask-service-alerts
+  namespace: jenkins
+  labels:
+    prometheus: flask-service-alerts
+    release: prometheus
+spec:
+  groups:
+    - name: flask_service_alerts
+      rules:
+        - alert: FlaskServiceDown
+          expr: absent(up{service="flask-contacts-app-service"})
+          for: 20s
+          labels:
+            severity: critical
+          annotations:
+            summary: "Flask Service is Down"
+            description: "The Flask service (flask-contacts-app-service) is not responding for more than 1 minute."
+
+EOF
+'''
+                }
+            }
+         }
     }
 }
